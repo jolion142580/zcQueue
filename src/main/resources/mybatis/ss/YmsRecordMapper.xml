@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiko.ss.dao.YmsRecordMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.YmsRecord">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="curr_affaircode" jdbcType="NVARCHAR" property="currAffaircode"/>
+        <result column="audit_opinion" jdbcType="NVARCHAR" property="auditOpinion"/>
+        <result column="statue_desc" jdbcType="NVARCHAR" property="statueDesc"/>
+        <result column="status" jdbcType="NVARCHAR" property="status"/>
+        <result column="onlineAppId" jdbcType="NVARCHAR" property="status"/>
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    curr_affaircode, audit_opinion, statue_desc, status,onlineApplyId
+  </sql>
+
+    <select id="listByNotNull" parameterType="com.yiko.ss.domain.YmsRecord" resultType="com.yiko.ss.domain.YmsRecord">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM yms_record
+
+        <where>
+            <if test="currAffaircode != null and currAffaircode != ''">
+                and curr_affaircode=#{currAffaircode}
+            </if>
+            <if test="onlineApplyId != null and onlineApplyId !=''">
+                and onlineApplyId=#{onlineApplyId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryHandlingMattersByDate" resultType="com.yiko.ss.domain.YmsRecord">
+        SELECT
+        y.curr_affaircode, y.audit_opinion, y.statue_desc, y.status,y.onlineApplyId,o.creattime,o.id
+        FROM yms_record y,onlineApply o
+        WHERE y.onlineApplyId = o.id AND o.creattime between #{startTime} and #{endTime}
+    </select>
+</mapper>

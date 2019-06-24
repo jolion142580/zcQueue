@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>张槎街道行政服务中心</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.staticfile.org/font-awesome/4.4.0/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/style.min.css?v=4.1.0" rel="stylesheet">
+    <link href="/js/plugins/layer/laydate/need/laydate.css"
+          th:href="@{/js/plugins/layer/laydate/need/laydate.css}" rel="stylesheet">
+    <link href="/js/plugins/layer/laydate/skins/default/laydate.css"
+          th:href="@{/js/plugins/layer/laydate/skins/default/laydate.css}" rel="stylesheet">
+    <link href="/css/layui.css" rel="stylesheet">
+
+
+</head>
+<body class="gray-bg top-navigation">
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row border-bottom white-bg">
+            <div class="col-sm-offset-2" style="margin-left: 9.4%;">
+                <div>
+                    <label class="layui-form-label" style="width: 100px;">查询日期</label>
+                    <div class="layui-input-inline">
+                        <!--<input type="text" class="layui-input" id="yearAndMonth" lay-key="4">-->
+                        <input id="yearAndMonth" name="limitdate" class="laydate-icon form-control layer-date"/>
+                    </div>
+                    <button type="button" onclick="dateButton();" class="btn btn-info">查询</button>
+                </div>
+            </div>
+
+        </div>
+        <div class="wrapper wrapper-content">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>注册人数</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 th:text="${chartAccoutVo.registerUserCount}" class="no-margins"
+                                    id="registerUserCount">
+                                    386,200</h1>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>办结事项数量</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 id="handlingMattersCount" th:text="${chartAccoutVo.handlingMattersCount}"
+                                    class="no-margins">80,800</h1>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>提交事项数量</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <h1 id="commitAffairCount" th:text="${chartAccoutVo.commitAffairCount}"
+                                    class="no-margins">80,800</h1>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <div class="m-t-sm">
+
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <div id="zhuzhuang" style="width: 900px; ;height: 400px;">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <!--<div id="zhuzhuang" style="width: 800px; ;height: 700px; border: solid">-->
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="https://cdn.staticfile.org/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!--<script src="/js/laydate.js"></script>-->
+
+<script src="/js/echarts.min.js"></script>
+<script src="/js/plugins/layer/laydate/laydate.js"></script>
+<script type="text/javascript" src="//sandbox.runjs.cn/uploads/rs/92/eqafvybw/theme.js"></script>
+
+<script>
+    var myChart = echarts.init(document.getElementById('zhuzhuang'));
+    $(document).ready(function () {
+
+        var datetime = $("#yearAndMonth").val();
+        myChart.showLoading();
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "/ss/chart/showOnlineByMonth",
+            data: {"queryDate": datetime},
+            async: false,
+            error: function (request) {
+                alert("Connection error");
+            },
+            success: function (data) {
+                var onlineAccount = [];
+                var onlineName = [];
+                for (var i = 0; i < data.onlineApplyCountVos.length; i++) {
+                    onlineName.push(data.onlineApplyCountVos[i].affairName);
+                    onlineAccount.push(data.onlineApplyCountVos[i].affairCount);
+                }
+                setOption(onlineName, onlineAccount);
+                myChart.hideLoading();
+            }
+
+        })
+
+    });
+
+
+    laydate.render({
+        elem: '#yearAndMonth',
+        type: 'month'
+    });
+
+    function dateButton() {
+        var datetime = $("#yearAndMonth").val();
+        $.ajax({
+            cache: true,
+            type: "POST",
+            url: "/ss/chart/queryChartAccountByDate",
+            data: {"queryDate": datetime},
+            async: false,
+            error: function (request) {
+                alert("Connection error");
+            },
+            success: function (data) {
+                if (data.code == 0) {
+                    if (data.chartAccoutVo != null) {
+                        $("#registerUserCount").text(data.chartAccoutVo.registerUserCount);
+                        $("#handlingMattersCount").text(data.chartAccoutVo.handlingMattersCount);
+                        $("#commitAffairCount").text(data.chartAccoutVo.commitAffairCount);
+                    }
+                } else {
+                    parent.layer.msg(data.msg);
+                }
+
+            }
+        });
+        toChart();
+    }
+
+
+    function setOption(onlineName, onlineAccount) {
+        myChart.setOption({
+
+            title: {
+                text: '前五办事量',
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['办事量']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: {show: true},
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    data: onlineName,
+                    axisLabel: {//坐标轴刻度标签的相关设置。
+                        formatter: function (params) {
+                            var newParamsName = "";// 最终拼接成的字符串
+                            var paramsNameNumber = params.length;// 实际标签的个数
+                            var provideNumber = 4;// 每行能显示的字的个数
+                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+                            /**
+                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+                             */
+                            // 条件等同于rowNumber>1
+                            if (paramsNameNumber > provideNumber) {
+                                /** 循环每一行,p表示行 */
+                                for (var p = 0; p < rowNumber; p++) {
+                                    var tempStr = "";// 表示每一次截取的字符串
+                                    var start = p * provideNumber;// 开始截取的位置
+                                    var end = start + provideNumber;// 结束截取的位置
+                                    // 此处特殊处理最后一行的索引值
+                                    if (p == rowNumber - 1) {
+                                        // 最后一次不换行
+                                        tempStr = params.substring(start, paramsNameNumber);
+                                    } else {
+                                        // 每一次拼接字符串并换行
+                                        tempStr = params.substring(start, end) + "\n";
+                                    }
+                                    newParamsName += tempStr;// 最终拼成的字符串
+                                }
+
+                            } else {
+                                // 将旧标签的值赋给新标签
+                                newParamsName = params;
+                            }
+                            //将最终的字符串返回
+                            return newParamsName
+                        }
+
+                    }
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            grid: {//直角坐标系内绘图网格
+                show: true,//是否显示直角坐标系网格。[ default: false ]
+//                left:"20%",//grid 组件离容器左侧的距离。
+//                right:"30px",
+                borderColor: "#c45455",//网格的边框颜色
+                bottom: "20%" //
+            },
+            series: [
+                {
+                    name: '办事量',
+                    type: 'bar',
+                    barWidth: 30,
+                    data: onlineAccount,
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: '最大值'},
+                            {type: 'min', name: '最小值'}
+                        ]
+                    },
+                }
+            ]
+
+        });
+    }
+
+
+    function toChart() {
+        var datetime = $("#yearAndMonth").val();
+        myChart.showLoading();
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "/ss/chart/showOnlineByMonth",
+            data: {"queryDate": datetime},
+            async: false,
+            error: function (request) {
+                alert("Connection error");
+            },
+            success: function (data) {
+                var onlineAccount = [];
+                var onlineName = [];
+                for (var i = 0; i < data.onlineApplyCountVos.length; i++) {
+                    onlineName.push(data.onlineApplyCountVos[i].affairName);
+                    onlineAccount.push(data.onlineApplyCountVos[i].affairCount);
+                }
+                myChart.hideLoading();
+                setOption(onlineName, onlineAccount);
+            }
+        });
+
+    }
+
+</script>
+
+</body>
+
+</html>

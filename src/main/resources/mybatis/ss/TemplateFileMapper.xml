@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.TemplateFileMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.TemplateFile">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="filename" property="filename" jdbcType="VARCHAR"/>
+        <result column="localpath" property="localpath" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="createtime" property="createtime" jdbcType="VARCHAR"/>
+        <result column="departid" property="departid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <insert id="insert" parameterType="com.yiko.ss.domain.TemplateFile">
+    insert into template_file (id, name, filename,
+      localpath, remark, createtime, 
+      departid)
+    values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{filename,jdbcType=VARCHAR}, 
+      #{localpath,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{createtime,jdbcType=VARCHAR}, 
+      #{departid,jdbcType=VARCHAR})
+  </insert>
+    <sql id="Base_Column_List">
+    id, name, filename,
+      localpath, remark, createtime,
+      departid
+  </sql>
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM template_file
+        <where>
+            <if test="departId != null and departId != ''">
+                and departid =#{departId}
+            </if>
+            <if test="id != null and id != ''">
+                and id =#{id}
+            </if>
+        </where>
+
+    </select>
+
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM template_file
+        where id =#{id}
+          
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM template_file
+        <where>
+            <if test="id != null and id != ''">
+                and id =#{id}
+            </if>
+            <if test="name != null and name != ''">
+                and name =#{name}
+            </if>
+            <if test="departid != null and departid != ''">
+                and departid =#{departid}
+            </if>
+            <if test="filename != null and filename !=''">
+                and filename LIKE '%${filename}%'
+            </if>
+        </where>
+        order by createtime desc
+    </select>
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.TemplateFile">
+        insert into template_file
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="filename != null">
+                filename,
+            </if>
+            <if test="localpath != null">
+                localpath,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="createtime != null">
+                createtime,
+            </if>
+            <if test="departid != null">
+                departid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="filename != null">
+                #{filename,jdbcType=VARCHAR},
+            </if>
+            <if test="localpath != null">
+                #{localpath,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="departid != null">
+                #{departid,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.yiko.ss.domain.TemplateFile">
+        update template_file
+        <set>
+            <if test="name != null">
+                name= #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="filename != null">
+                filename= #{filename,jdbcType=VARCHAR},
+            </if>
+            <if test="localpath != null">
+                localpath= #{localpath,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                remark= #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="createtime != null">
+                createtime= #{createtime,jdbcType=VARCHAR},
+            </if>
+            <if test="departid != null">
+                departid= #{departid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        WHERE id=#{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="remove" parameterType="java.lang.String">
+        delete from template_file
+        where id = #{id,jdbcType=VARCHAR}
+    </delete>
+
+    <delete id="batchRemove">
+        delete from template_file where id in
+        <foreach item="ids" collection="array" open="(" separator=","
+                 close=")">
+            #{ids}
+        </foreach>
+    </delete>
+</mapper>

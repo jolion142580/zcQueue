@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <input id="onlineApplyId" type="hidden" th:value="${onlineApplyId}">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-content">
+
+                <table id="exampleTable" data-mobile-responsive="true">
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div id="exampleToolbar">
+    <button class="btn btn-success" id="sure">确认</button>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/onlineApply/materials.js"></script>
+</body>
+</html>

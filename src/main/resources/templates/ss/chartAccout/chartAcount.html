@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link rel="stylesheet" href="/laydate/layui.css"/>
+<link rel="stylesheet" href="/laydate/laydate.css"/>
+<style>
+    .my_label {
+        position: relative;
+        float: left;
+        display: block;
+        padding: 9px 0px;
+        font-weight: normal;
+        line-height: 20px;
+        text-align: right;
+    }
+</style>
+<body class="gray-bg">
+
+
+<div class="wrapper wrapper-content ">
+
+
+    <div class="ibox">
+        <div class="ibox-title">
+            <h5>办事统计列表 </h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <i class="fa fa-wrench"></i>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="ibox-content">
+
+            <div class="row clearfix">
+                <div class="col-md-3">
+                    <label class="my_label">起始日期:</label>
+                    <input type="text" class="laydate-icon layer-date form-control" id="startTime"
+                           placeholder="请选择日期"
+                           onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                           style="background-color: #fff;"
+                           readonly="readonly"/>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="my_label">结束日期:</label>
+                    <input type="text" class="laydate-icon layer-date form-control " id="endTime"
+                           placeholder="请选择日期"
+                           onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"
+                           style="background-color: #fff;"
+                           readonly="readonly"/>
+                </div>
+
+                <div class="col-sm-3">
+                    <button class="btn btn-success" onclick="confirm()">查询</button>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-sm-12">
+                <div class="ibox">
+                    <div class="ibox-body">
+                        <table id="exampleTable" data-mobile-responsive="true">
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>柱状图</h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="graph_flot.html#">
+                                <i class="fa fa-wrench"></i>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user">
+                                <li><a href="graph_flot.html#">选项1</a>
+                                </li>
+                                <li><a href="graph_flot.html#">选项2</a>
+                                </li>
+                            </ul>
+                            <a class="close-link">
+                                <i class="fa fa-times"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+
+                        <div class="echarts" id="echarts-bar-chart" ></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/charCount/charCount.js"></script>
+<!-- ECharts -->
+<script src="/js/plugins/echarts/echarts-all.js"></script>
+<script type="text/javascript" src="/js/plugins/layer/laydate/laydate.js"></script>
+<!--<script src="/laydate/laydate.js"></script>-->
+
+<script>
+
+
+</script>
+
+</body>
+</html>

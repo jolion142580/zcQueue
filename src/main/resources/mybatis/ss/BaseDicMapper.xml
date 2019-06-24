@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.BaseDicDao">
+    <!--  <resultMap id="BaseResultMap" type="BaseDicDO" >
+        <id column="id" property="id" jdbcType="VARCHAR" />
+        <result column="baseDicId" property="basedicid" jdbcType="VARCHAR" />
+        <result column="baseDicType" property="basedictype" jdbcType="VARCHAR" />
+        <result column="cname" property="cname" jdbcType="VARCHAR" />
+        <result column="iconPath" property="iconpath" jdbcType="VARCHAR" />
+      </resultMap>-->
+    <sql id="Base_Column_List">
+    id, baseDicId, baseDicType, cname, iconPath,valid
+  </sql>
+    <select id="get" resultType="com.yiko.ss.domain.BaseDicDO">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_base_dic
+        <where>
+            <if test="id != null and id !='' ">
+                and id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="baseDicType != null and baseDicType != ''">
+                and baseDicType=#{baseDicType}
+            </if>
+            <if test="baseDicId != null and baseDicId != ''">
+                and baseDicId =#{baseDicId}
+            </if>
+
+            <if test="cName != null and cName != ''">
+                and cName LIKE '%${cName}%'
+            </if>
+        </where>
+    </select>
+
+    <!--查询部门信息-->
+    <!-- <select id="chooseDept" resultType="com.yiko.ss.domain.BaseDicDO" parameterType="String">
+
+         <if test="baseDicType == null">
+             SELECT baseDicType
+             from ss_base_dic
+             GROUP BY [baseDicType]
+         </if>
+
+         <if test="baseDicType != null">
+             SELECT baseDicType,cname,baseDicId
+             from ss_base_dic where
+             baseDicType = #{baseDicType}
+             <if test="cName != null">
+                 and cName=#{cName}
+             </if>
+
+         </if>
+     </select>-->
+
+    <select id="list" resultType="com.yiko.ss.domain.BaseDicDO">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_base_dic
+        <where>
+            <if test="id != null and id != ''">and Id = #{id}</if>
+            <if test="baseDicId != null and baseDicId != ''">and baseDicId = #{baseDicId}</if>
+            <if test="baseDicType != null and baseDicType != ''">and baseDicType = #{baseDicType}</if>
+            <if test="cName != null and cName != ''">and cname LIKE '%${cName}%'</if>
+            <if test="iconPath != null and iconPath != ''">and iconPath = #{iconPath}</if>
+        </where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by baseDicId desc
+            </otherwise>
+        </choose>
+    </select>
+
+
+    <delete id="remove" parameterType="java.lang.String">
+    delete from ss_base_dic
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+    <insert id="save" parameterType="com.yiko.ss.domain.BaseDicDO">
+    insert into ss_base_dic (id, baseDicId, baseDicType, 
+      cname, iconPath)
+    values (#{id,jdbcType=VARCHAR}, #{baseDicId,jdbcType=VARCHAR}, #{baseDicType,jdbcType=VARCHAR},
+      #{cName,jdbcType=VARCHAR}, #{iconPath,jdbcType=VARCHAR})
+  </insert>
+
+
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.BaseDicDO">
+        insert into ss_base_dic
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="baseDicId != null">
+                baseDicId,
+            </if>
+            <if test="baseDicType != null">
+                baseDicType,
+            </if>
+            <if test="cName != null">
+                cname,
+            </if>
+            <if test="iconPath != null">
+                iconPath,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="baseDicId != null">
+                #{baseDicId,jdbcType=VARCHAR},
+            </if>
+            <if test="baseDicType != null">
+                #{baseDicType,jdbcType=VARCHAR},
+            </if>
+            <if test="cName != null">
+                #{cName,jdbcType=VARCHAR},
+            </if>
+            <if test="iconPath != null">
+                #{iconPath,jdbcType=VARCHAR}
+            </if>
+            <if test="valid != null">
+                #{valid,jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="update" parameterType="com.yiko.ss.domain.BaseDicDO">
+        update ss_base_dic
+        <set>
+            <if test="baseDicId !='' and baseDicId != null">
+                baseDicId = #{baseDicId,jdbcType=VARCHAR},
+            </if>
+            <if test="baseDicType != '' and baseDicType != null">
+                baseDicType = #{baseDicType,jdbcType=VARCHAR},
+            </if>
+            <if test="cName != '' and cName != null">
+                cname = #{cName,jdbcType=VARCHAR},
+            </if>
+            <if test="iconPath != '' and iconPath != null">
+                iconPath = #{iconPath,jdbcType=VARCHAR},
+            </if>
+            <if test="valid != '' and valid != null">
+                valid = #{valid,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <delete id="batchRemove">
+        delete from ss_base_dic where id in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

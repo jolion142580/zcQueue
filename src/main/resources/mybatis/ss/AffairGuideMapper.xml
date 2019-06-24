@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.AffairGuideDao" >
+ <!-- <resultMap id="BaseResultMap" type="AffairGuideDO" >
+    <id column="guideid" property="guideid" jdbcType="VARCHAR" />
+    <result column="affairid" property="affairid" jdbcType="VARCHAR" />
+    <result column="accessorypath" property="accessorypath" jdbcType="NVARCHAR" />
+    <result column="according" property="according" jdbcType="NVARCHAR" />
+    <result column="charge" property="charge" jdbcType="NVARCHAR" />
+    <result column="chargegist" property="chargegist" jdbcType="NVARCHAR" />
+    <result column="condition" property="condition" jdbcType="NVARCHAR" />
+    <result column="inquire" property="inquire" jdbcType="NVARCHAR" />
+    <result column="institution" property="institution" jdbcType="NVARCHAR" />
+    <result column="material" property="material" jdbcType="NVARCHAR" />
+    <result column="procedures" property="procedures" jdbcType="NVARCHAR" />
+    <result column="sepcialversion" property="sepcialversion" jdbcType="NVARCHAR" />
+    <result column="site" property="site" jdbcType="NVARCHAR" />
+    <result column="time" property="time" jdbcType="NVARCHAR" />
+    <result column="xrndomu" property="xrndomu" jdbcType="NVARCHAR" />
+  </resultMap>-->
+  <sql id="Base_Column_List" >
+    guideid, affairid, accessorypath, according, charge, chargegist, condition, inquire, 
+    institution, material, procedures, sepcialversion, site, time, xrndomu
+  </sql>
+  <select id="getByAffairId" resultType="com.yiko.ss.domain.AffairGuideDO" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ss_affair_guide
+    where affairid = #{affairId,jdbcType=VARCHAR}
+  </select>
+
+
+  <select id="selectByPrimaryKey" resultType="com.yiko.ss.domain.AffairGuideDO" parameterType="java.lang.String" >
+    select
+    <include refid="Base_Column_List" />
+    from ss_affair_guide
+    where guideid = #{guideId,jdbcType=VARCHAR}
+  </select>
+
+  <delete id="remove" parameterType="java.lang.String" >
+    delete from ss_affair_guide
+    where guideid = #{guideId,jdbcType=VARCHAR}
+  </delete>
+
+  <delete id="deleteByAffairId" parameterType="java.lang.String" >
+    delete from ss_affair_guide
+    where affairid = #{affairId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="save" parameterType="com.yiko.ss.domain.AffairGuideDO" >
+    insert into ss_affair_guide (guideid, affairid, accessorypath, 
+      according, charge, chargegist, 
+      condition, inquire, institution, 
+      material, procedures, sepcialversion, 
+      site, time, xrndomu
+      )
+    values (#{guideId,jdbcType=VARCHAR}, #{affairId,jdbcType=VARCHAR}, #{accessoryPath,jdbcType=NVARCHAR},
+      #{according,jdbcType=NVARCHAR}, #{charge,jdbcType=NVARCHAR}, #{chargegist,jdbcType=NVARCHAR},
+      #{condition,jdbcType=NVARCHAR}, #{inquire,jdbcType=NVARCHAR}, #{institution,jdbcType=NVARCHAR}, 
+      #{material,jdbcType=NVARCHAR}, #{procedures,jdbcType=NVARCHAR}, #{sepcialversion,jdbcType=NVARCHAR}, 
+      #{site,jdbcType=NVARCHAR}, #{time,jdbcType=NVARCHAR}, #{xrndomu,jdbcType=NVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yiko.ss.domain.AffairGuideDO" >
+    insert into ss_affair_guide
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="guideId != null" >
+        guideid,
+      </if>
+      <if test="affairId != null" >
+        affairid,
+      </if>
+      <if test="accessoryPath != null" >
+        accessorypath,
+      </if>
+      <if test="according != null" >
+        according,
+      </if>
+      <if test="charge != null" >
+        charge,
+      </if>
+      <if test="chargegist != null" >
+        chargegist,
+      </if>
+      <if test="condition != null" >
+        condition,
+      </if>
+      <if test="inquire != null" >
+        inquire,
+      </if>
+      <if test="institution != null" >
+        institution,
+      </if>
+      <if test="material != null" >
+        material,
+      </if>
+      <if test="procedures != null" >
+        procedures,
+      </if>
+      <if test="sepcialversion != null" >
+        sepcialversion,
+      </if>
+      <if test="site != null" >
+        site,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+      <if test="xrndomu != null" >
+        xrndomu,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="guideId != null" >
+        #{guideId,jdbcType=VARCHAR},
+      </if>
+      <if test="affairId != null" >
+        #{affairId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessoryPath != null" >
+        #{accessoryPath,jdbcType=NVARCHAR},
+      </if>
+      <if test="according != null" >
+        #{according,jdbcType=NVARCHAR},
+      </if>
+      <if test="charge != null" >
+        #{charge,jdbcType=NVARCHAR},
+      </if>
+      <if test="chargegist != null" >
+        #{chargegist,jdbcType=NVARCHAR},
+      </if>
+      <if test="condition != null" >
+        #{condition,jdbcType=NVARCHAR},
+      </if>
+      <if test="inquire != null" >
+        #{inquire,jdbcType=NVARCHAR},
+      </if>
+      <if test="institution != null" >
+        #{institution,jdbcType=NVARCHAR},
+      </if>
+      <if test="material != null" >
+        #{material,jdbcType=NVARCHAR},
+      </if>
+      <if test="procedures != null" >
+        #{procedures,jdbcType=NVARCHAR},
+      </if>
+      <if test="sepcialversion != null" >
+        #{sepcialversion,jdbcType=NVARCHAR},
+      </if>
+      <if test="site != null" >
+        #{site,jdbcType=NVARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=NVARCHAR},
+      </if>
+      <if test="xrndomu != null" >
+        #{xrndomu,jdbcType=NVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.yiko.ss.domain.AffairGuideDO" >
+    update ss_affair_guide
+    <set >
+      <if test="affairId != null" >
+        affairid = #{affairId,jdbcType=VARCHAR},
+      </if>
+      <if test="accessoryPath != null" >
+        accessorypath = #{accessoryPath,jdbcType=NVARCHAR},
+      </if>
+      <if test="according != null" >
+        according = #{according,jdbcType=NVARCHAR},
+      </if>
+      <if test="charge != null" >
+        charge = #{charge,jdbcType=NVARCHAR},
+      </if>
+      <if test="chargegist != null" >
+        chargegist = #{chargegist,jdbcType=NVARCHAR},
+      </if>
+      <if test="condition != null" >
+        condition = #{condition,jdbcType=NVARCHAR},
+      </if>
+      <if test="inquire != null" >
+        inquire = #{inquire,jdbcType=NVARCHAR},
+      </if>
+      <if test="institution != null" >
+        institution = #{institution,jdbcType=NVARCHAR},
+      </if>
+      <if test="material != null" >
+        material = #{material,jdbcType=NVARCHAR},
+      </if>
+      <if test="procedures != null" >
+        procedures = #{procedures,jdbcType=NVARCHAR},
+      </if>
+      <if test="sepcialversion != null" >
+        sepcialversion = #{sepcialversion,jdbcType=NVARCHAR},
+      </if>
+      <if test="site != null" >
+        site = #{site,jdbcType=NVARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=NVARCHAR},
+      </if>
+      <if test="xrndomu != null" >
+        xrndomu = #{xrndomu,jdbcType=NVARCHAR},
+      </if>
+    </set>
+    where guideid = #{guideId,jdbcType=VARCHAR}
+  </update>
+ <!-- <update id="updateByPrimaryKey" parameterType="AffairGuideDO" >
+    update ss_affair_guide
+    set affairid = #{affairid,jdbcType=VARCHAR},
+      accessorypath = #{accessorypath,jdbcType=NVARCHAR},
+      according = #{according,jdbcType=NVARCHAR},
+      charge = #{charge,jdbcType=NVARCHAR},
+      chargegist = #{chargegist,jdbcType=NVARCHAR},
+      condition = #{condition,jdbcType=NVARCHAR},
+      inquire = #{inquire,jdbcType=NVARCHAR},
+      institution = #{institution,jdbcType=NVARCHAR},
+      material = #{material,jdbcType=NVARCHAR},
+      procedures = #{procedures,jdbcType=NVARCHAR},
+      sepcialversion = #{sepcialversion,jdbcType=NVARCHAR},
+      site = #{site,jdbcType=NVARCHAR},
+      time = #{time,jdbcType=NVARCHAR},
+      xrndomu = #{xrndomu,jdbcType=NVARCHAR}
+    where guideid = #{guideid,jdbcType=VARCHAR}
+  </update>-->
+
+  <delete id="batchRemove">
+    delete from ss_affair_guide where guideId in
+    <foreach item="guideId" collection="array" open="(" separator=","
+             close=")">
+      #{guideId}
+    </foreach>
+  </delete>
+
+  <select id="list" resultType="com.yiko.ss.domain.AffairGuideDO">
+    select
+    <include refid="Base_Column_List" />
+    from ss_affair_guide
+    <where>
+      <if test="guideId != null and guideId != ''"> and guideid = #{guideId} </if>
+      <if test="affairId != null and affairId != ''"> and affairid = #{affairId} </if>
+      <if test="accessoryPath != null and accessoryPath != ''"> and accessorypath = #{accessoryPath} </if>
+      <if test="according != null and according != ''"> and according = #{according} </if>
+      <if test="charge != null and charge != ''"> and charge = #{charge} </if>
+      <if test="chargegist != null and chargegist != ''"> and chargegist = #{chargegist} </if>
+      <if test="condition != null and condition != ''"> and condition = #{condition} </if>
+      <if test="inquire != null and inquire != ''"> and inquire = #{inquire} </if>
+      <if test="institution != null and institution != ''"> and institution = #{institution} </if>
+      <if test="material != null and material != ''"> and material = #{material} </if>
+      <if test="procedures != null and procedures != ''"> and procedures = #{procedures} </if>
+      <if test="sepcialversion != null and sepcialversion != ''"> and sepcialversion = #{sepcialversion} </if>
+
+      <if test="site != null and site != ''"> and site = #{site} </if>
+      <if test="time != null and time != ''"> and time = #{time} </if>
+      <if test="xrndomu != null and xrndomu != ''"> and xrndomu = #{xrndomu} </if>
+
+
+    </where>
+    <choose>
+      <when test="sort != null and sort.trim() != ''">
+        order by ${sort} ${order}
+      </when>
+      <otherwise>
+        order by guideid desc
+      </otherwise>
+    </choose>
+  </select>
+</mapper>

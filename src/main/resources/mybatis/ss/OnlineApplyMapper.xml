@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.OnlineApplyDao">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.OnlineApplyDO">
+        <id column="id" property="id" jdbcType="NVARCHAR"/>
+        <result column="affairid" property="affairid" jdbcType="NVARCHAR"/>
+        <result column="openid" property="openid" jdbcType="NVARCHAR"/>
+        <result column="onlineData" property="onlinedata" jdbcType="NVARCHAR"/>
+        <result column="iscommit" property="iscommit" jdbcType="NVARCHAR"/>
+        <result column="state" property="state" jdbcType="NVARCHAR"/>
+        <result column="limitDate" property="limitdate" jdbcType="VARCHAR"/>
+        <result column="opinion" property="opinion" jdbcType="NVARCHAR"/>
+        <result column="remark" property="remark" jdbcType="NVARCHAR"/>
+        <result column="firstUserId" property="firstUserId" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="NVARCHAR"/>
+
+        <result column="creattime" property="creattime" jdbcType="NVARCHAR"/>
+    </resultMap>
+
+    <resultMap id="JoinUserInfoAndAffairMap" type="com.yiko.ss.domain.OnlineApplyDO">
+        <id column="id" property="id" jdbcType="NVARCHAR"/>
+        <result column="affairid" property="affairid" jdbcType="NVARCHAR"/>
+        <result column="openid" property="openid" jdbcType="NVARCHAR"/>
+        <result column="onlineData" property="onlinedata" jdbcType="NVARCHAR"/>
+        <result column="iscommit" property="iscommit" jdbcType="NVARCHAR"/>
+        <result column="state" property="state" jdbcType="NVARCHAR"/>
+        <result column="limitDate" property="limitdate" jdbcType="VARCHAR"/>
+        <result column="opinion" property="opinion" jdbcType="NVARCHAR"/>
+        <result column="saffairname" property="affairname" jdbcType="VARCHAR"/>
+        <result column="uname" property="name" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="NVARCHAR"/>
+        <result column="creattime" property="creattime" jdbcType="NVARCHAR"/>
+        <result column="firstUserId" property="firstUserId" jdbcType="VARCHAR"/>
+        <result column="userId" property="userId" jdbcType="NVARCHAR"/>
+    </resultMap>
+
+
+    <resultMap id="calculateMonthlyTotalMap" type="com.yiko.ss.vo.OnlineApplyCountVo">
+        <result column="affairCount" property="affairCount"/>
+        <result column="a_affairName" property="affairName"/>
+    </resultMap>
+
+    <select id="queryUserNameAndAffairNameByOnlineId" parameterType="string" resultMap="JoinUserInfoAndAffairMap">
+      SELECT  o.id,o.affairid,o.openid,o.iscommit,o.state,o.limitdate,o.opinion,o.creattime,o.approved_or_not,
+        s.affairname as saffairname,u.name as uname
+     from onlineApply as o left join ss_affairs as s on o.affairid = s.affairid
+        left join ss_user_info u on o.openid=u.id
+        WHERE o.id =#{id}
+    </select>
+
+    <sql id="Base_Column_List">
+    id, affairid, openid, onlineData,onlineData1, iscommit, state, limitDate, opinion, remark, creattime,objindex
+  </sql>
+
+    <select id="calculateDateTotal" resultMap="calculateMonthlyTotalMap">
+        SELECT top 5 o.affairid,
+        COUNT(o.affairid) as [affairCount],a.affairname as a_affairName from onlineApply o
+        left join ss_affairs a on o.affairid=a.affairid
+        <where>
+            o.iscommit ='true'
+            <if test="startTime != null and startTime !=''">
+              and  o.creattime between #{startTime} and #{endTime}
+            </if>
+
+        </where>
+        group by o.affairid,a.affairname order by [affairCount] desc
+    </select>
+
+
+    <select id="list" resultType="com.yiko.ss.domain.OnlineApplyDO">
+        select
+        o.id,o.affairid,o.openid,o.onlinedata,o.approved_or_not,o.limitdate,o.iscommit,o.state,o.opinion,o.creattime,o.handle_name,
+        o.curr_affaircode,s.affairname
+        affairname,u.name,s_o.objname objname,o.objindex objindex
+        from onlineApply as o left join ss_affairs as s on o.affairid = s.affairid
+        left join ss_user_info u on o.openid=u.id
+        LEFT JOIN ss_affair_object s_o ON o.objindex=s_o.objindex AND o.affairid=s_o.affairid
+        <where>
+            <if test="objindex != null and objindex != ''">and o.objindex LIKE '%${objindex}%'</if>
+            <if test="userId != null and userId != ''">and o.userId LIKE '%${userId}%'</if>
+            <if test="id != null and id != ''">and Id = #{id}</if>
+            <if test="affairid != null and affairid != ''">and affairid = #{affairid}</if>
+            <if test="openid != null and openid != ''">and openid = #{openid}</if>
+            <if test="onlineData != null and onlineData != ''">and onlineData = #{onlineData}</if>
+            <if test="startTime != null and startTime !=''">and creattime between #{startTime} and #{endTime}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="iscommit != null and iscommit != ''">and o.iscommit = #{iscommit}</if>
+            <if test="limitDate != null and limitDate != ''">and limitDate = #{limitDate}</if>
+            <if test="opinion != null and opinion != ''">and opinion = #{opinion}</if>
+            <if test="remark != null and remark != ''">and remark = #{remark}</if>
+            <if test="name != null and name != ''">and u.name like '%${name}%'</if>
+            <if test="approvedOrNot != null and approvedOrNot != ''">and o.approved_or_not =#{approvedOrNot}</if>
+           <!-- <if test="isCheck != null and isCheck != ''">and (state = #{isCheck} or state ='STATE' or state='待资料上传')-->
+            <if test="beginTime !=null and beginTime !='' and endTime != null and endTime !=''"  >and CONVERT(varchar(10),o.creattime)  BETWEEN #{beginTime} AND  #{endTime} </if>
+            <if test="isCheck != null and isCheck != ''">and state in( #{isCheck} ,'STATE' , '待资料上传')
+            </if>
+        </where>
+        order by o.creattime desc
+
+    </select>
+
+
+    <select id="countList" resultType="com.yiko.ss.domain.OnlineApplyDO">
+        select
+        o.id,o.approved_or_not,o.iscommit,o.state,o.opinion,o.creattime
+
+        from onlineApply as o
+        <where>
+            <if test="startTime != null and startTime !=''">and o.creattime between #{startTime} and #{endTime}</if>
+            <if test="state != null and state != ''">and state = #{state}</if>
+            <if test="iscommit != null and iscommit != ''">and o.iscommit = #{iscommit}</if>
+            <if test="approvedOrNot != null and approvedOrNot != ''">and o.approved_or_not =#{approvedOrNot}</if>
+            <if test="isCheck != null and isCheck != ''">and (o.state = #{isCheck} or o.state ='STATE' or o.state='待资料上传')
+            </if>
+        </where>
+
+    </select>
+
+
+    <update id="updateByCode" parameterType="com.yiko.ss.domain.OnlineApplyDO">
+        update onlineApply
+        <set>
+            <if test="affairid != null">
+                affairid = #{affairid,jdbcType=NVARCHAR},
+            </if>
+            <if test="openid != null">
+                openid = #{openid,jdbcType=NVARCHAR},
+            </if>
+            <if test="onlinedata != null">
+                onlineData = #{onlinedata,jdbcType=NVARCHAR},
+            </if>
+            <if test="onlinedata1 != null">
+                onlineData1 = #{onlinedata1,jdbcType=NVARCHAR},
+            </if>
+            <if test="iscommit != null">
+                iscommit = #{iscommit,jdbcType=NVARCHAR},
+            </if>
+            <if test="state != null">
+                state = #{state,jdbcType=NVARCHAR},
+            </if>
+            <if test="limitdate != null">
+                limitDate = #{limitdate,jdbcType=VARCHAR},
+            </if>
+
+            <if test="remark != null">
+                remark = #{remark,jdbcType=NVARCHAR},
+            </if>
+            <if test="creattime != null">
+                creattime = #{creattime,jdbcType=NVARCHAR},
+            </if>
+            <if test="currAffaircode != null">
+                curr_affaircode = #{currAffaircode,jdbcType=NVARCHAR},
+            </if>
+            <if test="statueDesc != null">
+                statue_desc = #{statueDesc,jdbcType=NVARCHAR},
+            </if>
+
+
+        </set>
+        where curr_affaircode = #{currAffaircode,jdbcType=NVARCHAR}
+    </update>
+</mapper>

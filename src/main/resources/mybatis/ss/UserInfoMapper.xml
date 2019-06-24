@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.UserInfo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="creattime" property="creattime" jdbcType="VARCHAR"/>
+        <result column="idCard" property="idcard" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="brithday" property="brithday" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, address, creattime, idCard, name, phone,sex,brithday
+  </sql>
+    <sql id="userInfoList">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_user_info
+        <where>
+            <if test="id != null and id !=''">
+                and id = #{id,jdbcType=VARCHAR}
+            </if>
+            <if test="address != null and address != ''">
+                and address =#{address,jdbcType=VARCHAR}
+            </if>
+            <if test="creattime != null and creattime != ''">
+                and creattime =#{creattime,jdbcType=VARCHAR}
+            </if>
+            <if test="startTime != null and startTime !=''">
+                    creattime between #{startTime} and #{endTime}
+            </if>
+            <if test="idcard != null and idcard != ''">
+                and idcard LIKE '%${idcard}%'
+            </if>
+            <if test="name != null and name != ''">
+                and name LIKE '%${name}%'
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone =#{phone,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+    <select id="selectList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        <include refid="userInfoList"/>
+    </select>
+
+    <select id="getById" resultMap="BaseResultMap">
+        <include refid="userInfoList"/>
+    </select>
+
+    <select id="queryUserByCreateDate" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from ss_user_info
+        WHERE
+        creattime
+        BETWEEN #{startTime} AND #{endTime}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ss_user_info
+    where id = #{id,jdbcType=VARCHAR}
+  </delete>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultType="com.yiko.ss.domain.UserInfo" >
+        SELECT
+        <include refid="Base_Column_List"/>
+        from ss_user_info
+        where id = #{id,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insert" parameterType="com.yiko.ss.domain.UserInfo">
+    insert into ss_user_info (id, address, creattime, 
+      idCard, name, phone
+      )
+    values (#{id,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{creattime,jdbcType=VARCHAR}, 
+      #{idcard,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.UserInfo">
+        insert into ss_user_info
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="creattime != null">
+                creattime,
+            </if>
+            <if test="idcard != null">
+                idCard,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                #{creattime,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiko.ss.domain.UserInfo">
+        update ss_user_info
+        <set>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="creattime != null">
+                creattime = #{creattime,jdbcType=VARCHAR},
+            </if>
+            <if test="idcard != null">
+                idCard = #{idcard,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiko.ss.domain.UserInfo">
+    update ss_user_info
+    set address = #{address,jdbcType=VARCHAR},
+      creattime = #{creattime,jdbcType=VARCHAR},
+      idCard = #{idcard,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+
+    <delete id="batchRemove">
+        delete from ss_user_info where id in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+
+</mapper>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox-content">
+
+
+                <form class="form-horizontal m-t" id="signupForm">
+                    <!--<input id="baseDicType" name="baseDicType" th:value="${user.baseDicType}"
+                        type="hidden">-->
+
+                    <div class="form-group">
+                        <div class="col-sm-8">
+                            <input id="affairId" name="affairId" class="form-control"
+                                   type="hidden" th:value="${affairs.affairId}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">事项名：</label>
+                        <div class="col-sm-8">
+                            <input id="affairName" name="affairName" class="form-control"
+                                   type="text" th:value="${affairs.affairName}">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">部门：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="account" style="width: 200px;" id="chooseDept">
+                                <option th:each="depart : ${departList}" th:value="${depart.baseDicId}"
+                                        th:text="${depart.cName==null}?'':${depart.cName}"
+                                        th:selected="${depart.isCheck == 'check'}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!--<div class="form-group">
+                        <label class="col-sm-3 control-label">模板：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="account" style="width: 200px;" id="template">
+                                <option value="">请选择</option>
+                                <option th:each="file : ${fileList}" th:value="${file.id}" th:text="${file.filename}"
+                                        th:selected="${file.isCheck == 'check'}"></option>
+                            </select>
+                        </div>
+                        </divcol-sm-8>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">人生事项:</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="account" style="width: 200px;" id="chooseLife">
+                                <option value="">请选择</option>
+                                <option th:each="life : ${lifeList}" th:value="${life.baseDicId}"
+                                        th:text="${life.cName==''}?'':${life.cName}"
+                                        th:selected="${life.isCheck == 'check'}"></option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否网上办事：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="isOnline" style="width: 200px;" id="isOnline">
+                                <option value="">请选择</option>
+                                <option value="true" th:selected="${affairs.isOnline == 'true'}">是</option>
+                                <option value="false" th:selected="${affairs.isOnline == 'false'}">否</option>
+                            </select>
+                        </div>
+                        </divcol-sm-8>
+                    </div>
+
+                 <!--   <div class="form-group">
+                        <label class="col-sm-3 control-label">是否网上填写：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="isWrite" style="width: 200px;" id="isWrite">
+                                <option value="">请选择</option>
+                                <option value="true" th:selected=" ${affairs.isWrite=='true'}">是</option>
+                                <option value="false" th:selected=" ${affairs.isWrite=='false'}">否</option>
+                            </select>
+                        </div>
+                        </divcol-sm-8>
+                    </div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否即办：</label>
+                        <div class="col-sm-8">
+                            <select class="form-control" name="isTodo" style="width: 200px;" id="isTodo">
+                                <option value="">请选择</option>
+                                <option value="1" th:selected="${affairs.isTodo == '1'}">是</option>
+                                <option value="2" th:selected="${affairs.isTodo == '2'}">否</option>
+                            </select>
+                        </div>
+                        </divcol-sm-8>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">层级：</label>
+                        <div class="col-sm-8">
+                            <input id="level" name="level" readonly="readonly" class="form-control"
+                                   type="text" th:value="${affairs.level}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">时限类型：</label>
+                        <div class="col-sm-8">
+                            <input id="timeLimitType" name="timeLimitType" class="form-control"
+                                   type="text" th:value="${affairs.timeLimitType}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">办事时限:</label>
+                        <div class="col-sm-8">
+                            <input id="timeLimit" name="timeLimit" class="form-control"
+                                   type="text" th:value="${affairs.timeLimit}">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">结果形式:</label>
+                        <div class="col-sm-8">
+                            <input id="resultForm" name="resultForm" class="form-control"
+                                   type="text" th:value="${affairs.resultForm}">
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">事项编号:</label>
+                        <div class="col-sm-8">
+                            <input id="code" name="code" class="form-control"
+                                   type="text" th:value="${affairs.code}">
+                        </div>
+                    </div>
+
+
+                   <!-- <div class="form-group">
+                        <label class="col-sm-3 control-label">配置项:</label>
+                        <div class="col-sm-8">
+                            <input id="config" name="config" class="form-control"
+                                   type="text" th:value="${affairs.config}">
+                        </div>
+                    </div>-->
+
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/affairs/edit.js">
+</script>
+</body>
+</html>

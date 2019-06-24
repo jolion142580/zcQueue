@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content">
+    <!--记录模板Id-->
+    <input id="pretrialopinionId" type="hidden">
+    <input id="opinionInit" type="hidden">
+    <!--<div class="row">-->
+    <div class="col-sm-8">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+
+                <form class="form-horizontal m-t" id="signupForm">
+                    <input id="id" name="id" class="form-control" type="hidden"
+                           th:value="${onlineApplyDO.id}">
+
+                    <input id="objindex" name="objindex" class="form-control" type="hidden"
+                           th:value="${onlineApplyDO.objindex}">
+
+                    <input id="openid" name="openid" class="form-control" type="hidden"
+                           th:value="${onlineApplyDO.openid}">
+
+
+                    <input id="affairid" name="affairid" class="form-control" type="hidden"
+                           th:value="${onlineApplyDO.affairid}">
+
+                    <input id="creattime" name="creattime" class="form-control" type="hidden"
+                           th:value="${onlineApplyDO.creattime}">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">名称：</label>
+                        <div class="col-sm-8">
+                            <input id="affairname" name="affairname" class="form-control"
+                                   type="text" th:value="${onlineApplyDO.affairname}" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">姓名：</label>
+                        <div class="col-sm-8">
+                            <input class="form-control-success" id="name" name="name"
+                                   type="text" th:value="${onlineApplyDO.name}" readonly>
+                            <a class="btn btn-warning btn-sm" data-toggle="modal"
+                               data-target="#userInfo">
+                                个人信息
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">有效期限：</label>
+                        <div class="col-sm-8">
+
+                            <input id="limitdate" name="limitdate" class="laydate-icon form-control layer-date"
+                                   th:value="${onlineApplyDO.limitdate}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核是否通过：</label>
+
+                        <div class="col-sm-8">
+                            <label class="radio-inline">
+                                <input type="radio" th:attr="checked=${onlineApplyDO.approvedOrNot == '1'?true:false}"
+                                       name="state" id="inlineRadio1" value="已审核"> 通过
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" th:attr="checked=${onlineApplyDO.approvedOrNot == '0' ?true:false}"
+                                       name="state" id="inlineRadio2" value="预审不通过"> 不通过
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核意见：</label>
+                        <div class="col-sm-8">
+                            <button type="button" id="opinionfailure" class="btn btn-w-m btn-success"
+                                    style="width: 140px;">审核意见模板
+                            </button>
+                            <button type="button" id="showMarerials" class="btn btn-w-m btn-info"
+                                    style="width: 140px; display: none">材料
+                            </button>
+
+                            <textarea id="opinion" name="opinion" class="form-control"
+                                      style="min-height: 100px;max-height: 400px;"
+                                      th:text="${onlineApplyDO.opinion}">
+
+                            </textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button type="submit" class="btn btn-primary"
+                                    th:if="${onlineApplyDO.approvedOrNot == null || onlineApplyDO.approvedOrNot==''|| onlineApplyDO.approvedOrNot=='null' }"
+                            > 提交
+                            </button> &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;
+
+                            <button name="id" th:value="${onlineApplyDO.id}" onclick="loadPDF(this.value)" type="button"
+                                    th:if="${onlineApplyDO.approvedOrNot == null || onlineApplyDO.approvedOrNot==''|| onlineApplyDO.approvedOrNot=='null' }"
+                                    class="btn btn-warning btn-sm">生成文档
+                            </button>
+
+                        </div>
+                    </div>
+                </form>
+                <div class="col-sm-8 col-sm-offset-3">
+                    <button id="commitopinion" th:if="${flag==false}" type="submit" class="btn btn-primary">提交意见
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <div class="col-sm-4">
+         <div class="ibox float-e-margins">
+             <div class="ibox-content">
+                 <div class="row">
+                     <div class="col-sm-12">
+                         <div class="ibox">
+                             <div class="ibox-body">
+                                 <table id="exampleTable1" data-mobile-responsive="true">
+                                 </table>
+
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+
+             </div>
+         </div>
+     </div>-->
+    <div class="col-sm-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>附件信息</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+
+                    </ul>
+
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <div class="fixed-table-toolbar">
+
+                                    <div class="columns pull-left">
+                                        <button shiro:hasPermission="ss:fileInfo:batchRemove" type="button"
+                                                class="btn  btn-danger" onclick="batchRemove()">
+                                            <i class="fa fa-trash hidden" aria-hidden="true"></i>删除
+                                        </button>
+
+                                        <button class="btn btn-success" onclick="submitAffair()">上传一门式</button>
+                                    </div>
+                                </div>
+                                <table id="exampleTable1" data-mobile-responsive="true">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <div class="modal fade" id="userInfo" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"
+                            data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        申请人详细信息
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal m-t">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">姓名：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="name"
+                                       type="text" th:value="${userInfo.name}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">身份证：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="idCard"
+                                       type="text" th:value="${userInfo.idcard}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">联系电话：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="phone"
+                                       type="text" th:value="${userInfo.phone}" readonly>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">住址：</label>
+                            <div class="col-sm-8">
+                                <input class="form-control" name="address"
+                                       type="text" th:value="${userInfo.address}" readonly>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"
+                            data-dismiss="modal">关闭
+                    </button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/onlineApply/edit.js"></script>
+<script type="text/javascript" src="/js/appjs/ss/onlineApply/onlineApplyUnChecked.js"></script>
+<script type="text/javascript" src="/js/appjs/ss/onlineApply/pretrialopinion.js">
+</script>
+</body>
+</html>

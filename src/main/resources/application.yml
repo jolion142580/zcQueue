@@ -1,0 +1,46 @@
+server:
+  session-timeout: 1800
+#  tomcat:
+#      max-threads: 1000
+#      min-spare-threads: 30
+#      max-connections: 60000
+  port: 8089
+  ssl:
+      key-store: classpath:1538138699843.jks
+      key-store-password: 1538138699843
+      key-store-type: JKS
+      #key-alias: tomcat
+security:
+  basic:
+    enabled: false
+spring:
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  profiles: 
+    active: dev
+  http:
+    multipart:
+      max-file-size: 30Mb
+      max-request-size: 30Mb
+  devtools:
+    restart:
+      enabled: true    
+mybatis: 
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mybatis/**/*Mapper.xml
+  typeAliasesPackage: com.yiko*.domain
+#配置缓存和session存储方式，默认ehcache,可选redis
+cacheType: ehcache
+
+#pagehelper分页插件
+pagehelper:
+  helper-dialect: sqlserver
+  reasonable: true
+  support-methods-arguments: true
+  page-size-zero: true
+  params: count=countSql

@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.ComplaintMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.Complaint">
+        <id column="c_Id" property="cId" jdbcType="VARCHAR"/>
+        <result column="complaintReplyTime" property="complaintreplytime" jdbcType="VARCHAR"/>
+        <result column="complaintTime" property="complainttime" jdbcType="VARCHAR"/>
+        <result column="complaint_Content" property="complaintContent" jdbcType="VARCHAR"/>
+        <result column="complaint_Name" property="complaintName" jdbcType="VARCHAR"/>
+        <result column="complaint_Num" property="complaintNum" jdbcType="VARCHAR"/>
+        <result column="complaint_Pho" property="complaintPho" jdbcType="VARCHAR"/>
+        <result column="complaint_Remark" property="complaintRemark" jdbcType="VARCHAR"/>
+        <result column="complaint_Reply" property="complaintReply" jdbcType="VARCHAR"/>
+        <result column="complaint_Show" property="complaintShow" jdbcType="VARCHAR"/>
+        <result column="complaint_Status" property="complaintStatus" jdbcType="VARCHAR"/>
+        <result column="complaint_Title" property="complaintTitle" jdbcType="VARCHAR"/>
+        <result column="open_Id" property="openId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="complaintAndUserName" type="com.yiko.ss.domain.Complaint">
+        <id column="c_Id" property="cId" jdbcType="VARCHAR"/>
+        <result column="complaintReplyTime" property="complaintreplytime" jdbcType="VARCHAR"/>
+        <result column="complaintTime" property="complainttime" jdbcType="VARCHAR"/>
+        <result column="complaint_Content" property="complaintContent" jdbcType="VARCHAR"/>
+        <result column="complaint_Name" property="complaintName" jdbcType="VARCHAR"/>
+        <result column="complaint_Num" property="complaintNum" jdbcType="VARCHAR"/>
+        <result column="complaint_Pho" property="complaintPho" jdbcType="VARCHAR"/>
+        <result column="complaint_Remark" property="complaintRemark" jdbcType="VARCHAR"/>
+        <result column="complaint_Reply" property="complaintReply" jdbcType="VARCHAR"/>
+        <result column="complaint_Show" property="complaintShow" jdbcType="VARCHAR"/>
+        <result column="complaint_Status" property="complaintStatus" jdbcType="VARCHAR"/>
+        <result column="complaint_Title" property="complaintTitle" jdbcType="VARCHAR"/>
+        <result column="open_Id" property="openId" jdbcType="VARCHAR"/>
+        <association property="userInfo" javaType="com.yiko.ss.domain.UserInfo">
+            <id column="id" property="id"/>
+            <result column="name" property="name" jdbcType="VARCHAR"></result>
+            <result column="phone" property="phone" jdbcType="VARCHAR"></result>
+        </association>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+    c_Id, complaintReplyTime, complaintTime, complaint_Content, complaint_Name, complaint_Num,
+    complaint_Pho, complaint_Remark,complaint_Reply, complaint_Show, complaint_Status,
+    complaint_Title, open_Id
+  </sql>
+
+    <sql id="complaintAnduser">
+    c.c_Id, c.complaintReplyTime, c.complaintTime, c.complaint_Content, c.complaint_Name, c.complaint_Num,
+    c.complaint_Pho, c.complaint_Remark, c.complaint_Reply, c.complaint_Show, c.complaint_Status,
+    c.complaint_Title, c.open_Id,u.name,u.phone
+  </sql>
+
+    <select id="list" resultMap="complaintAndUserName">
+        select
+        <include refid="complaintAnduser"/>
+        from complaint c,ss_user_info u
+        <where>
+            and c.open_Id=u.id
+            <if test="complaintName != null and complaintName != ''">
+                AND u.name LIKE '%${complaintName}%'
+            </if>
+            <if test="complaintTitle != null and complaintTitle != ''">
+                AND c.complaint_Title LIKE '%${complaintTitle}%'
+            </if>
+            <if test="reply != null and reply != ''">
+                ${reply}
+            </if>
+        </where>
+        ORDER BY c.complaintTime DESC
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+
+        from complaint
+        where c_Id = #{cId,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from complaint
+    where c_Id = #{cId,jdbcType=VARCHAR}
+  </delete>
+    <insert id="insert" parameterType="com.yiko.ss.domain.Complaint">
+    insert into complaint (c_Id, complaintReplyTime, complaintTime, 
+      complaint_Content, complaint_Name, complaint_Num, 
+      complaint_Pho, complaint_Remark, complaint_Reply, 
+      complaint_Show, complaint_Status, complaint_Title, 
+      open_Id)
+    values (#{cId,jdbcType=VARCHAR}, #{complaintreplytime,jdbcType=VARCHAR}, #{complainttime,jdbcType=VARCHAR}, 
+      #{complaintContent,jdbcType=VARCHAR}, #{complaintName,jdbcType=VARCHAR}, #{complaintNum,jdbcType=VARCHAR}, 
+      #{complaintPho,jdbcType=VARCHAR}, #{complaintRemark,jdbcType=VARCHAR}, #{complaintReply,jdbcType=VARCHAR}, 
+      #{complaintShow,jdbcType=VARCHAR}, #{complaintStatus,jdbcType=VARCHAR}, #{complaintTitle,jdbcType=VARCHAR}, 
+      #{openId,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.Complaint">
+        insert into complaint
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cId != null">
+                c_Id,
+            </if>
+            <if test="complaintreplytime != null">
+                complaintReplyTime,
+            </if>
+            <if test="complainttime != null">
+                complaintTime,
+            </if>
+            <if test="complaintContent != null">
+                complaint_Content,
+            </if>
+            <if test="complaintName != null">
+                complaint_Name,
+            </if>
+            <if test="complaintNum != null">
+                complaint_Num,
+            </if>
+            <if test="complaintPho != null">
+                complaint_Pho,
+            </if>
+            <if test="complaintRemark != null">
+                complaint_Remark,
+            </if>
+            <if test="complaintReply != null">
+                complaint_Reply,
+            </if>
+            <if test="complaintShow != null">
+                complaint_Show,
+            </if>
+            <if test="complaintStatus != null">
+                complaint_Status,
+            </if>
+            <if test="complaintTitle != null">
+                complaint_Title,
+            </if>
+            <if test="openId != null">
+                open_Id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cId != null">
+                #{cId,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintreplytime != null">
+                #{complaintreplytime,jdbcType=VARCHAR},
+            </if>
+            <if test="complainttime != null">
+                #{complainttime,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintContent != null">
+                #{complaintContent,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintName != null">
+                #{complaintName,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintNum != null">
+                #{complaintNum,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintPho != null">
+                #{complaintPho,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintRemark != null">
+                #{complaintRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintReply != null">
+                #{complaintReply,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintShow != null">
+                #{complaintShow,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintStatus != null">
+                #{complaintStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintTitle != null">
+                #{complaintTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                #{openId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiko.ss.domain.Complaint">
+        update complaint
+        <set>
+            <if test="complaintreplytime != null">
+                complaintReplyTime = #{complaintreplytime,jdbcType=VARCHAR},
+            </if>
+            <if test="complainttime != null">
+                complaintTime = #{complainttime,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintContent != null">
+                complaint_Content = #{complaintContent,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintName != null">
+                complaint_Name = #{complaintName,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintNum != null">
+                complaint_Num = #{complaintNum,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintPho != null">
+                complaint_Pho = #{complaintPho,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintRemark != null">
+                complaint_Remark = #{complaintRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintReply != null">
+                complaint_Reply = #{complaintReply,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintShow != null">
+                complaint_Show = #{complaintShow,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintStatus != null">
+                complaint_Status = #{complaintStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="complaintTitle != null">
+                complaint_Title = #{complaintTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="openId != null">
+                open_Id = #{openId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where c_Id = #{cId,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiko.ss.domain.Complaint">
+    update complaint
+    set complaintReplyTime = #{complaintreplytime,jdbcType=VARCHAR},
+      complaintTime = #{complainttime,jdbcType=VARCHAR},
+      complaint_Content = #{complaintContent,jdbcType=VARCHAR},
+      complaint_Name = #{complaintName,jdbcType=VARCHAR},
+      complaint_Num = #{complaintNum,jdbcType=VARCHAR},
+      complaint_Pho = #{complaintPho,jdbcType=VARCHAR},
+      complaint_Remark = #{complaintRemark,jdbcType=VARCHAR},
+      complaint_Reply = #{complaintReply,jdbcType=VARCHAR},
+      complaint_Show = #{complaintShow,jdbcType=VARCHAR},
+      complaint_Status = #{complaintStatus,jdbcType=VARCHAR},
+      complaint_Title = #{complaintTitle,jdbcType=VARCHAR},
+      open_Id = #{openId,jdbcType=VARCHAR}
+    where c_Id = #{cId,jdbcType=VARCHAR}
+  </update>
+
+    <delete id="batchRemove">
+        delete from complaint where c_Id in
+        <foreach item="cId" collection="array" open="(" separator=","
+                 close=")">
+            #{cId}
+        </foreach>
+    </delete>
+</mapper>

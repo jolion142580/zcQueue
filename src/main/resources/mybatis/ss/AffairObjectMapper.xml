@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.AffairObjectMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.AffairObject">
+        <id column="objid" property="objid" jdbcType="VARCHAR"/>
+        <result column="objindex" property="objindex" jdbcType="VARCHAR"/>
+        <result column="objname" property="objname" jdbcType="NVARCHAR"/>
+        <result column="affairid" property="affairid" jdbcType="VARCHAR"/>
+        <result column="iswrite" property="iswrite" jdbcType="VARCHAR"/>
+        <result column="config" property="config" jdbcType="NVARCHAR"/>
+        <result column="templateid" property="templateid" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    objid, objindex, objname, affairid, iswrite, config, templateid,config1,templateid1,isshow
+  </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_affair_object
+        where objid = #{objid,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ss_affair_object
+    where objid = #{objid,jdbcType=VARCHAR}
+  </delete>
+
+    <delete id="deleteByAffairId" parameterType="java.lang.String">
+        delete from ss_affair_object
+        where affairid = #{affairId,jdbcType=VARCHAR}
+    </delete>
+    <insert id="insert" parameterType="com.yiko.ss.domain.AffairObject">
+    insert into ss_affair_object (objid, objindex, objname, 
+      affairid,  iswrite,
+      config, templateid)
+    values (#{objid,jdbcType=VARCHAR}, #{objindex,jdbcType=VARCHAR}, #{objname,jdbcType=NVARCHAR}, 
+      #{affairid,jdbcType=VARCHAR}, #{iswrite,jdbcType=VARCHAR},
+      #{config,jdbcType=NVARCHAR}, #{templateid,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.AffairObject">
+        insert into ss_affair_object
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="objid != null">
+                objid,
+            </if>
+            <if test="objindex != null">
+                objindex,
+            </if>
+            <if test="objname != null">
+                objname,
+            </if>
+            <if test="affairid != null">
+                affairid,
+            </if>
+
+            <if test="iswrite != null">
+                iswrite,
+            </if>
+            <if test="config != null">
+                config,
+            </if>
+            <if test="templateid != null">
+                templateid,
+            </if>
+
+            <if test="config1 != null">
+                config1,
+            </if>
+            <if test="templateid1 != null">
+                templateid1,
+            </if>
+            <if test="isshow != null">
+                isshow,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="objid != null">
+                #{objid,jdbcType=VARCHAR},
+            </if>
+            <if test="objindex != null">
+                #{objindex,jdbcType=VARCHAR},
+            </if>
+            <if test="objname != null">
+                #{objname,jdbcType=NVARCHAR},
+            </if>
+            <if test="affairid != null">
+                #{affairid,jdbcType=VARCHAR},
+            </if>
+
+            <if test="iswrite != null">
+                #{iswrite,jdbcType=VARCHAR},
+            </if>
+            <if test="config != null">
+                #{config,jdbcType=NVARCHAR},
+            </if>
+            <if test="templateid != null">
+                #{templateid,jdbcType=VARCHAR},
+            </if>
+            <if test="config1 != null">
+                #{config1,jdbcType=NVARCHAR},
+            </if>
+            <if test="templateid1 != null">
+                #{templateid1,jdbcType=VARCHAR},
+            </if>
+            <if test="isshow != null">
+                #{isshow,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiko.ss.domain.AffairObject">
+        update ss_affair_object
+        <set>
+            <if test="objindex != null">
+                objindex = #{objindex,jdbcType=VARCHAR},
+            </if>
+            <if test="objname != null">
+                objname = #{objname,jdbcType=NVARCHAR},
+            </if>
+            <if test="affairid != null">
+                affairid = #{affairid,jdbcType=VARCHAR},
+            </if>
+
+            <if test="iswrite != null">
+                iswrite = #{iswrite,jdbcType=VARCHAR},
+            </if>
+            <if test="config != null">
+                config = #{config,jdbcType=NVARCHAR},
+            </if>
+            <if test="templateid != null">
+                templateid = #{templateid,jdbcType=VARCHAR},
+            </if>
+            <if test="config1 != null">
+                config1 = #{config1,jdbcType=NVARCHAR},
+            </if>
+            <if test="templateid1 != null">
+                templateid1 = #{templateid1,jdbcType=VARCHAR},
+            </if>
+            <if test="isshow != null">
+                isshow = #{isshow,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where objid = #{objid,jdbcType=VARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiko.ss.domain.AffairObject">
+    update ss_affair_object
+    set objindex = #{objindex,jdbcType=VARCHAR},
+      objname = #{objname,jdbcType=NVARCHAR},
+      affairid = #{affairid,jdbcType=VARCHAR},
+      iswrite = #{iswrite,jdbcType=VARCHAR},
+      config = #{config,jdbcType=NVARCHAR},
+      templateid = #{templateid,jdbcType=VARCHAR}
+    where objid = #{objid,jdbcType=VARCHAR}
+  </update>
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM ss_affair_object
+
+        <where>
+            <if test="affairId != null and affairId !=''">
+                and affairid =#{affairId}
+            </if>
+            <if test="objname != null and objname !=''">
+                and objname LIKE '%${objname}%'
+            </if>
+            <if test="objindex != null and objindex !=''">
+                and objindex = #{objindex}
+            </if>
+        </where>
+    </select>
+
+    <delete id="batchRemove">
+        delete from ss_affair_object where objid in
+        <foreach item="objId" collection="array" open="(" separator=","
+                 close=")">
+            #{objId}
+        </foreach>
+    </delete>
+</mapper>

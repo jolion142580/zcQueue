@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+<div style="height:100%">
+    <iframe name='myFrame' width="100%" height="100%">
+    </iframe>
+    <form id="depForm" >
+        <input id="file" name="file" th:value="'/ss/fileInfo/displayPDF?path='+${localpath}"   type="hidden"/>
+    </form>
+</div>
+
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/pdf/zepto.min.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var src = '/ss/fileInfo/showPDF';
+        $("#depForm").attr("action", src);
+        $("#depForm").attr("target", "myFrame");
+        $("#depForm").submit();
+    })
+</script>
+</body>
+</html>

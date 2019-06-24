@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh_CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+
+
+<div class="wrapper wrapper-content " style="padding:0px">
+    <div class="col-sm-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>网上办事管理列表 </h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row">
+                  <!--  <div class="col-sm-12">
+
+                        <form id="searchForm" class="form-inline" action="" method="post">
+
+
+                                <div class="form-group">
+
+                                    <span>姓名：</span>
+                                    <input id="name" name="name" class=" form-control input-sm" type="text" value=""
+                                           size="12" maxlength="20">
+
+                                </div>
+
+                        </form>
+
+                    </div>-->
+                    <div class="col-sm-12">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <div class="fixed-table-toolbar">
+                                    <div class="columns pull-left">
+
+                                        <button shiro:hasPermission="ss:onlineApply:add" type="button"
+                                                class="btn  btn-primary" onclick="add()">
+                                            <i class="fa fa-plus hidden" aria-hidden="false	"></i>添加
+                                        </button>
+
+
+                                        <button shiro:hasPermission="ss:onlineApply:Batchremove" type="button"
+                                                class="btn  btn-danger" onclick="batchRemove()">
+                                            <i class="fa fa-trash hidden" aria-hidden="true"></i>删除
+                                        </button>
+                                    </div>
+                                    <div class="columns pull-left">
+                                        <button class="btn btn-success hidden" onclick="reLoad()">查询</button>
+                                        <button class="btn btn-success hidden" onclick="ymsHistory()">上传一门式记录</button>
+                                    </div>
+
+
+                                </div>
+                                <table id="exampleTable" data-mobile-responsive="true">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ <!-- <div class="col-sm-4">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>附件信息</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                        <i class="fa fa-wrench"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+
+                    </ul>
+
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox">
+                            <div class="ibox-body">
+                                <div class="fixed-table-toolbar">
+
+                                    <div class="columns pull-left">
+                                        <button shiro:hasPermission="ss:fileInfo:batchRemove" type="button"
+                                                class="btn  btn-danger" onclick="batchRemove()">
+                                            <i class="fa fa-trash hidden" aria-hidden="true"></i>删除
+                                        </button>
+
+                                        <button class="btn btn-success" onclick="submitAffair()">上传一门式</button>
+                                    </div>
+                                </div>
+                                <table id="exampleTable1" data-mobile-responsive="true">
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>-->
+</div>
+
+
+<!--shiro控制bootstraptable行内按钮看见性 来自bootdo的创新方案 -->
+<div>
+    <script type="text/javascript">
+        var s_add_h = 'hidden';
+        var s_edit_h = 'hidden';
+        var s_remove_h = 'hidden';
+        var f_remove_h = 'hidden';
+    </script>
+</div>
+
+<div shiro:hasPermission="ss:onlineApply:edit">
+    <script type="text/javascript">
+        s_edit_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="ss:onlineApply:add">
+    <script type="text/javascript">
+        s_add_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="ss:onlineApply:remove">
+    <script type="text/javascript">
+        var s_remove_h = '';
+    </script>
+</div>
+<div shiro:hasPermission="ss:fileInfo:remove">
+    <script type="text/javascript">
+        var f_remove_h = '';
+    </script>
+</div>
+
+</div>
+<div th:include="include :: footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/onlineApply/onlineApplyUnChecked.js"></script>
+
+</body>
+</html>

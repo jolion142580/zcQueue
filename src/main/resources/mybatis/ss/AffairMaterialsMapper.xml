@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.AffairMaterialsMapper">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.AffairMaterials">
+        <id column="id" property="id" jdbcType="NVARCHAR"/>
+        <result column="affairid" property="affairid" jdbcType="NVARCHAR"/>
+        <result column="tableid" property="tableid" jdbcType="NVARCHAR"/>
+        <result column="examplepath" property="examplepath" jdbcType="NVARCHAR"/>
+        <result column="istop" property="istop" jdbcType="NVARCHAR"/>
+        <result column="image_num" property="imageNum" jdbcType="NVARCHAR"/>
+        <result column="matname" property="matname" jdbcType="NVARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="NVARCHAR"/>
+        <result column="mattype" property="mattype" jdbcType="NVARCHAR"/>
+        <result column="image_info" property="imageInfo" jdbcType="NVARCHAR"/>
+        <result column="emptytablepath" property="emptytablepath" jdbcType="NVARCHAR"/>
+        <result column="matgroup" property="matgroup" jdbcType="NVARCHAR"/>
+        <result column="valid" property="valid" jdbcType="NVARCHAR"/>
+        <result column="materialcode" property="materialcode" jdbcType="NVARCHAR"/>
+        <result column="required" property="required" jdbcType="NVARCHAR"/>
+        <result column="matnumber" property="matnumber" jdbcType="NVARCHAR"/>
+        <result column="ismust" property="ismust" jdbcType="NVARCHAR"/>
+        <result column="reusetypeid" property="reusetypeid" jdbcType="NVARCHAR"/>
+        <result column="reusedetail" property="reusedetail" jdbcType="NVARCHAR"/>
+        <result column="matindex" property="matindex" jdbcType="NVARCHAR"/>
+        <result column="validdate" property="validdate" jdbcType="NVARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+  id, affairid, tableid, examplepath, istop, image_num, matname, remarks, mattype,
+  image_info, emptytablepath, matgroup, valid, materialcode, required, matnumber, ismust,
+  reusetypeid, reusedetail, matindex, validdate,localpath
+</sql>
+
+    <sql id="affairObjectJoinMaters">
+    m.id, m.affairid,m.localpath, m.tableid,  m.istop,  m.matname, m.remarks,m.valid,
+    m.required, m.matnumber, m.ismust
+  </sql>
+
+
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_affair_materials
+        <where>
+            <if test="id != null and id != ''">
+                and id =#{id}
+            </if>
+            <if test="affairId != null and affairId != ''">
+                and affairid =#{affairId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_affair_materials
+        WHERE id =#{affairMaterialsId}
+    </select>
+
+    <select id="selectAffairMaterials" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="affairObjectJoinMaters"/>
+        from ss_affair_materials AS m,ss_affair_object as o
+        <where>
+            and m.affairid=o.affairid
+            and m.affairid =#{affairId}
+            and o.objindex=#{objIndex}
+            and m.matindex LIKE '%${objIndex}%'
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from ss_affair_materials
+    where id = #{id,jdbcType=NVARCHAR}
+  </delete>
+
+    <delete id="deleteByAffairId" parameterType="java.lang.String">
+        delete from ss_affair_materials
+        where affairid = #{affairId,jdbcType=NVARCHAR}
+    </delete>
+
+    <update id="SetLocalPathByNull" parameterType="java.lang.String">
+        update ss_affair_materials set localPath = ''
+        where id = #{affairMateriaId,jdbcType=NVARCHAR}
+    </update>
+
+    <insert id="insert" parameterType="com.yiko.ss.domain.AffairMaterials">
+    insert into ss_affair_materials (id, affairid, tableid,
+      examplepath, istop, image_num,
+      matname, remarks, mattype,
+      image_info, emptytablepath, matgroup,
+      valid, materialcode, required,
+      matnumber, ismust, reusetypeid,
+      reusedetail, matindex, validdate
+      )
+    values (#{id,jdbcType=NVARCHAR}, #{affairid,jdbcType=NVARCHAR}, #{tableid,jdbcType=NVARCHAR},
+      #{examplepath,jdbcType=NVARCHAR}, #{istop,jdbcType=NVARCHAR}, #{imageNum,jdbcType=NVARCHAR},
+      #{matname,jdbcType=NVARCHAR}, #{remarks,jdbcType=NVARCHAR}, #{mattype,jdbcType=NVARCHAR},
+      #{imageInfo,jdbcType=NVARCHAR}, #{emptytablepath,jdbcType=NVARCHAR}, #{matgroup,jdbcType=NVARCHAR},
+      #{valid,jdbcType=NVARCHAR}, #{materialcode,jdbcType=NVARCHAR}, #{required,jdbcType=NVARCHAR},
+      #{matnumber,jdbcType=NVARCHAR}, #{ismust,jdbcType=NVARCHAR}, #{reusetypeid,jdbcType=NVARCHAR},
+      #{reusedetail,jdbcType=NVARCHAR}, #{matindex,jdbcType=NVARCHAR}, #{validdate,jdbcType=NVARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.AffairMaterials">
+        insert into ss_affair_materials
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="affairid != null">
+                affairid,
+            </if>
+            <if test="tableid != null">
+                tableid,
+            </if>
+            <if test="examplepath != null">
+                examplepath,
+            </if>
+            <if test="istop != null">
+                istop,
+            </if>
+            <if test="imageNum != null">
+                image_num,
+            </if>
+            <if test="matname != null">
+                matname,
+            </if>
+            <if test="remarks != null">
+                remarks,
+            </if>
+            <if test="mattype != null">
+                mattype,
+            </if>
+            <if test="imageInfo != null">
+                image_info,
+            </if>
+            <if test="emptytablepath != null">
+                emptytablepath,
+            </if>
+            <if test="matgroup != null">
+                matgroup,
+            </if>
+            <if test="valid != null">
+                valid,
+            </if>
+            <if test="materialcode != null">
+                materialcode,
+            </if>
+            <if test="required != null">
+                required,
+            </if>
+            <if test="matnumber != null">
+                matnumber,
+            </if>
+            <if test="ismust != null">
+                ismust,
+            </if>
+            <if test="reusetypeid != null">
+                reusetypeid,
+            </if>
+            <if test="reusedetail != null">
+                reusedetail,
+            </if>
+            <if test="matindex != null">
+                matindex,
+            </if>
+            <if test="validdate != null">
+                validdate,
+            </if>
+            <if test="localpath != null">
+                localpath,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=NVARCHAR},
+            </if>
+            <if test="affairid != null">
+                #{affairid,jdbcType=NVARCHAR},
+            </if>
+            <if test="tableid != null">
+                #{tableid,jdbcType=NVARCHAR},
+            </if>
+            <if test="examplepath != null">
+                #{examplepath,jdbcType=NVARCHAR},
+            </if>
+            <if test="istop != null">
+                #{istop,jdbcType=NVARCHAR},
+            </if>
+            <if test="imageNum != null">
+                #{imageNum,jdbcType=NVARCHAR},
+            </if>
+            <if test="matname != null">
+                #{matname,jdbcType=NVARCHAR},
+            </if>
+            <if test="remarks != null">
+                #{remarks,jdbcType=NVARCHAR},
+            </if>
+            <if test="mattype != null">
+                #{mattype,jdbcType=NVARCHAR},
+            </if>
+            <if test="imageInfo != null">
+                #{imageInfo,jdbcType=NVARCHAR},
+            </if>
+            <if test="emptytablepath != null">
+                #{emptytablepath,jdbcType=NVARCHAR},
+            </if>
+            <if test="matgroup != null">
+                #{matgroup,jdbcType=NVARCHAR},
+            </if>
+            <if test="valid != null">
+                #{valid,jdbcType=NVARCHAR},
+            </if>
+            <if test="materialcode != null">
+                #{materialcode,jdbcType=NVARCHAR},
+            </if>
+            <if test="required != null">
+                #{required,jdbcType=NVARCHAR},
+            </if>
+            <if test="matnumber != null">
+                #{matnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="ismust != null">
+                #{ismust,jdbcType=NVARCHAR},
+            </if>
+            <if test="reusetypeid != null">
+                #{reusetypeid,jdbcType=NVARCHAR},
+            </if>
+            <if test="reusedetail != null">
+                #{reusedetail,jdbcType=NVARCHAR},
+            </if>
+            <if test="matindex != null">
+                #{matindex,jdbcType=NVARCHAR},
+            </if>
+            <if test="validdate != null">
+                #{validdate,jdbcType=NVARCHAR},
+            </if>
+            <if test="localpath != null">
+                #{localpath,jdbcType=NVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.yiko.ss.domain.AffairMaterials">
+        update ss_affair_materials
+        <set>
+            <if test="affairid != null">
+                affairid = #{affairid,jdbcType=NVARCHAR},
+            </if>
+            <if test="tableid != null">
+                tableid = #{tableid,jdbcType=NVARCHAR},
+            </if>
+            <if test="examplepath != null">
+                examplepath = #{examplepath,jdbcType=NVARCHAR},
+            </if>
+            <if test="istop != null">
+                istop = #{istop,jdbcType=NVARCHAR},
+            </if>
+            <if test="imageNum != null">
+                image_num = #{imageNum,jdbcType=NVARCHAR},
+            </if>
+            <if test="matname != null">
+                matname = #{matname,jdbcType=NVARCHAR},
+            </if>
+            <if test="remarks != null">
+                remarks = #{remarks,jdbcType=NVARCHAR},
+            </if>
+            <if test="mattype != null">
+                mattype = #{mattype,jdbcType=NVARCHAR},
+            </if>
+            <if test="imageInfo != null">
+                image_info = #{imageInfo,jdbcType=NVARCHAR},
+            </if>
+            <if test="emptytablepath != null">
+                emptytablepath = #{emptytablepath,jdbcType=NVARCHAR},
+            </if>
+            <if test="matgroup != null">
+                matgroup = #{matgroup,jdbcType=NVARCHAR},
+            </if>
+            <if test="valid != null">
+                valid = #{valid,jdbcType=NVARCHAR},
+            </if>
+            <if test="materialcode != null">
+                materialcode = #{materialcode,jdbcType=NVARCHAR},
+            </if>
+            <if test="required != null">
+                required = #{required,jdbcType=NVARCHAR},
+            </if>
+            <if test="matnumber != null">
+                matnumber = #{matnumber,jdbcType=NVARCHAR},
+            </if>
+            <if test="ismust != null">
+                ismust = #{ismust,jdbcType=NVARCHAR},
+            </if>
+            <if test="reusetypeid != null">
+                reusetypeid = #{reusetypeid,jdbcType=NVARCHAR},
+            </if>
+            <if test="reusedetail != null">
+                reusedetail = #{reusedetail,jdbcType=NVARCHAR},
+            </if>
+            <if test="matindex != null">
+                matindex = #{matindex,jdbcType=NVARCHAR},
+            </if>
+            <if test="validdate != null">
+                validdate = #{validdate,jdbcType=NVARCHAR},
+            </if>
+            <if test="localpath != null">
+                localpath = #{localpath,jdbcType=NVARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=NVARCHAR}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.yiko.ss.domain.AffairMaterials">
+    update ss_affair_materials
+    set affairid = #{affairid,jdbcType=NVARCHAR},
+      tableid = #{tableid,jdbcType=NVARCHAR},
+      examplepath = #{examplepath,jdbcType=NVARCHAR},
+      istop = #{istop,jdbcType=NVARCHAR},
+      image_num = #{imageNum,jdbcType=NVARCHAR},
+      matname = #{matname,jdbcType=NVARCHAR},
+      remarks = #{remarks,jdbcType=NVARCHAR},
+      mattype = #{mattype,jdbcType=NVARCHAR},
+      image_info = #{imageInfo,jdbcType=NVARCHAR},
+      emptytablepath = #{emptytablepath,jdbcType=NVARCHAR},
+      matgroup = #{matgroup,jdbcType=NVARCHAR},
+      valid = #{valid,jdbcType=NVARCHAR},
+      materialcode = #{materialcode,jdbcType=NVARCHAR},
+      required = #{required,jdbcType=NVARCHAR},
+      matnumber = #{matnumber,jdbcType=NVARCHAR},
+      ismust = #{ismust,jdbcType=NVARCHAR},
+      reusetypeid = #{reusetypeid,jdbcType=NVARCHAR},
+      reusedetail = #{reusedetail,jdbcType=NVARCHAR},
+      matindex = #{matindex,jdbcType=NVARCHAR},
+      validdate = #{validdate,jdbcType=NVARCHAR}
+    where id = #{id,jdbcType=NVARCHAR}
+  </update>
+
+    <delete id="batchRemove">
+        delete from ss_affair_materials where id in
+        <foreach item="id" collection="array" open="(" separator=","
+                 close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="listByAffairId" parameterType="java.lang.String" resultMap="BaseResultMap">
+       select
+        <include refid="Base_Column_List"/>
+      from ss_affair_materials where affairid = #{affairid} and valid ='1'
+    </select>
+</mapper>

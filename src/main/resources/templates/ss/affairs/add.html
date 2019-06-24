@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content ">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content">
+                    <form class="form-horizontal m-t" id="signupForm">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">部门：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="account" style="width: 200px;" id="chooseDept">
+
+                                    <option>请选择</option>
+                                    <option th:each="base,iterStat:${departList}" th:value="${base.baseDicId}"
+                                            th:text="${base.cName}"></option>
+                                </select>
+                            </div>
+                            </divcol-sm-8>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否网上办事：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="isOnline" style="width: 200px;" id="isOnline">
+                                    <option value="">请选择</option>
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                            </divcol-sm-8>
+                        </div>
+
+                       <!-- <div class="form-group">
+                            <label class="col-sm-3 control-label">是否网上填写：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="isWrite" style="width: 200px;" id="isWrite">
+                                    <option value="">请选择</option>
+                                    <option value="true">是</option>
+                                    <option value="false">否</option>
+                                </select>
+                            </div>
+                            </divcol-sm-8>
+                        </div>-->
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否即办：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="isTodo" style="width: 200px;" id="isTodo">
+                                    <option value="">请选择</option>
+                                    <option value="1">是</option>
+                                    <option value="2">否</option>
+                                </select>
+                            </div>
+                            </divcol-sm-8>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">人生事项：</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" name="account" style="width: 200px;" id="chooseLife">
+
+                                    <option>请选择</option>
+                                    <option th:each="life,iterStat:${lifeList}" th:value="${life.baseDicId}"
+                                            th:text="${life.cName}"></option>
+                                </select>
+                            </div>
+                            </divcol-sm-8>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">事项名：</label>
+                            <div class="col-sm-8">
+                                <input id="affairName" name="affairName" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+
+
+                      <!--  <div class="form-group">
+                            <label class="col-sm-3 control-label">层级：</label>
+                            <div class="col-sm-8">
+                                <input id="level" name="level" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>-->
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">时限类型：</label>
+                            <div class="col-sm-8">
+                                <input id="timeLimitType" name="timeLimitType" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">办事时限:</label>
+                            <div class="col-sm-8">
+                                <input id="timeLimit" name="timeLimit" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">结果形式:</label>
+                            <div class="col-sm-8">
+                                <input id="resultForm" name="resultForm" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+                        <!--
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label">是否网上可办:</label>
+                                                    <div class="col-sm-8">
+                                                        <input id="isNet" name="isNet" class="form-control"
+                                                               type="text">
+                                                    </div>
+                                                </div>-->
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">事项编号:</label>
+                            <div class="col-sm-8">
+                                <input id="code" name="code" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>
+
+<!--
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">配置项:</label>
+                            <div class="col-sm-8">
+                                <input id="config" name="config" class="form-control"
+                                       type="text">
+                            </div>
+                        </div>-->
+
+                        <div class="form-group">
+                            <div class="col-sm-8 col-sm-offset-3">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/ss/affairs/add.js"></script>
+<!--<script type="text/javascript" src="/js/appjs/ss/affairs/choosedept.js"></script>-->
+
+</body>
+</html>

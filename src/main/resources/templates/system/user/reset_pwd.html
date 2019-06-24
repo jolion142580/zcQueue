@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div class="ibox-content">
+                <form class="form-horizontal m-t" id="signupForm">
+                    <input id="userId" name="userDO.userId" th:value="${user.userId}"
+                           type="hidden">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">输入密码：</label>
+                        <div class="col-sm-8">
+                            <input id="password" name="pwdNew" class="form-control"
+                                   type="password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-8 col-sm-offset-3">
+                            <button type="submit" class="btn btn-primary">提交</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 全局js -->
+<!--<script src="/js/jquery.min.js?v=2.1.4"></script>-->
+<!--<script src="/js/bootstrap.min.js?v=3.3.6"></script>-->
+
+<!--<script src="/js/content.js?v=1.0.0"></script>-->
+
+<!-- jQuery Validation plugin javascript-->
+<!--<script src="/js/plugins/validate/jquery.validate.min.js"></script>-->
+<!--<script src="/js/plugins/validate/messages_zh.min.js"></script>-->
+<!--<script src="/js/common.js"></script>-->
+<!--校验插件-->
+<!--<script src="/js/plugins/validate/jquery.validate.min.js"></script>-->
+<!--<script src="/js/plugins/validate/jquery.validate.extend.js"></script>-->
+<!--<script src="/js/plugins/validate/messages_zh.min.js"></script>-->
+<!--<script src="/js/common.js"></script>-->
+<!--<script src="/js/demo/form-validate-demo.js"></script>-->
+<!--<div th:include="include::footer"></div>-->
+<div th:include="include::footer"></div>
+<script type="text/javascript" src="/js/appjs/sys/user/reset_pwd.js"></script>
+</body>
+
+</html>

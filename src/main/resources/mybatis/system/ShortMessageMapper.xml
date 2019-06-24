@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yiko.system.dao.ShortMessageMapper">
+  <resultMap id="BaseResultMap" type="com.yiko.system.domain.ShortMessage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <result column="id" jdbcType="VARCHAR" property="id" />
+    <result column="user_id" jdbcType="VARCHAR" property="userId" />
+    <result column="create_time" jdbcType="VARCHAR" property="createTime" />
+    <result column="message_code" jdbcType="VARCHAR" property="messageCode" />
+    <result column="ip_address" jdbcType="VARCHAR" property="ipAddress" />
+  </resultMap>
+
+    <select id="sameDayCount" parameterType="string" resultType="int">
+    select count(1) from sys_short_message where datediff(day,create_time,getdate())=0 and ip_address =#{ipAddress}
+  </select>
+</mapper>

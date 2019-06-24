@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.AffairsDao">
+
+    <sql id="Base_Column_List">
+    affairid, departid, affairname, level, timelimit_type, timelimit, sortid, result_form, 
+    isnet, code, istodo,isOnline,iswrite,config,templateid
+  </sql>
+    <select id="get" resultType="com.yiko.ss.domain.AffairsDO" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from ss_affairs
+        where affairid = #{affairId,jdbcType=VARCHAR}
+    </select>
+    <delete id="remove" parameterType="java.lang.String">
+    delete from ss_affairs
+    where affairid = #{affairid,jdbcType=VARCHAR}
+  </delete>
+
+
+    <insert id="save" parameterType="com.yiko.ss.domain.AffairsDO">
+    insert into ss_affairs (affairid, departid, affairname,
+      level, timelimit_type, timelimit, 
+      sortid, result_form, isnet, 
+      code, istodo,isOnline,iswrite,config,templateid)
+    values (#{affairId,jdbcType=VARCHAR}, #{departId,jdbcType=VARCHAR}, #{affairName,jdbcType=VARCHAR},
+      #{level,jdbcType=VARCHAR}, #{timeLimitType,jdbcType=VARCHAR}, #{timeLimit,jdbcType=VARCHAR},
+      #{sortId,jdbcType=VARCHAR}, #{resultForm,jdbcType=VARCHAR}, #{isNet,jdbcType=VARCHAR},
+      #{code,jdbcType=VARCHAR}, #{isTodo,jdbcType=VARCHAR},#{isOnline,jdbcType=VARCHAR},#{isWrite,jdbcType=VARCHAR},#{config,jdbcType=VARCHAR},#{templateId,jdbcType=VARCHAR})
+  </insert>
+
+
+    <update id="update" parameterType="com.yiko.ss.domain.AffairsDO">
+        update ss_affairs
+        <set>
+            <if test="departId != null">
+                departid = #{departId,jdbcType=VARCHAR},
+            </if>
+            <if test="affairName != null">
+                affairname = #{affairName,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                level = #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="timeLimitType != null">
+                timelimit_type = #{timeLimitType,jdbcType=VARCHAR},
+            </if>
+            <if test="timeLimit != null">
+                timelimit = #{timeLimit,jdbcType=VARCHAR},
+            </if>
+            <if test="sortId != null">
+                sortid = #{sortId,jdbcType=VARCHAR},
+            </if>
+            <if test="resultForm != null">
+                result_form = #{resultForm,jdbcType=VARCHAR},
+            </if>
+            <if test="isNet != null">
+                isnet = #{isNet,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                code = #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="isTodo != null">
+                istodo = #{isTodo,jdbcType=VARCHAR},
+            </if>
+
+            <if test="isOnline != null">
+                isOnline = #{isOnline,jdbcType=VARCHAR},
+            </if>
+
+            <if test="isWrite != null">
+                isWrite = #{isWrite,jdbcType=VARCHAR},
+            </if>
+
+            <if test="config != null">
+                config = #{config,jdbcType=VARCHAR},
+            </if>
+
+            <if test="templateId != null">
+                templateid = #{templateId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where affairid = #{affairId,jdbcType=VARCHAR}
+    </update>
+    <resultMap id="affairsAndBaseDic" type="com.yiko.ss.domain.AffairsDO">
+        <id column="affairid" property="affairId"></id>
+        <result property="departId" column="departid"></result>
+        <result property="affairName" column="affairname"></result>
+        <result property="timeLimitType" column="timelimit_typelevel"></result>
+        <result property="timeLimit" column="timelimit"></result>
+        <result property="sortId" column="sortid"></result>
+        <result property="resultForm" column="result_form"></result>
+        <result property="isNet" column="isnet"></result>
+        <result property="code" column="code"></result>
+        <result property="isTodo" column="istodo"></result>
+        <result property="isOnline" column="isonline"></result>
+        <result property="isWrite" column="iswrite"></result>
+        <result property="config" column="config"></result>
+        <result property="templateId" column="templateid"></result>
+
+    </resultMap>
+
+    <select id="list" resultMap="affairsAndBaseDic">
+        select
+        a.affairid, a.departid, a.affairname, a.level, a.timelimit_type, a.timelimit, a.sortid, a.result_form,
+        a.isnet, a.code, a.istodo,a.isonline,a.iswrite,a.config,a.templateid
+        from ss_affairs a
+        <where>
+            <if test="affairId != null and affairId != ''">and a.affairid = #{affairId}</if>
+            <if test="affairName != null and affairName != ''">and a.affairname LIKE '%${affairName}%'</if>
+            <if test="sortId != null and sortId != ''">and a.sortid = #{sortId}</if>
+            <if test="departIds != null">
+                and a.departid in
+                <foreach item="item" collection="departIds" open="(" separator=","
+                         close=")">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+            <otherwise>
+                order by a.affairId desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="insertSelective" parameterType="com.yiko.ss.domain.AffairsDO">
+        insert into ss_affairs
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="affairId != null">
+                affairId,
+            </if>
+
+            <if test="departId != null">
+                departid,
+            </if>
+            <if test="affairName != null">
+                affairname,
+            </if>
+            <if test="level != null">
+                level,
+            </if>
+            <if test="timeLimitType != null">
+                timelimit_type,
+            </if>
+            <if test="timeLimit != null">
+                timelimit,
+            </if>
+            <if test="sortId != null">
+                sortid,
+            </if>
+            <if test="resultForm != null">
+                result_form,
+            </if>
+            <if test="isNet != null">
+                isnet,
+            </if>
+            <if test="code != null">
+                code,
+            </if>
+            <if test="isTodo != null">
+                istodo,
+            </if>
+
+            <if test="isOnline != null">
+                isOnline,
+            </if>
+
+            <if test="isWrite != null">
+                isWrite,
+            </if>
+
+            <if test="config != null">
+                config,
+            </if>
+
+            <if test="templateId != null">
+                templateid,
+            </if>
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="affairId != null">
+                #{affairId,jdbcType=VARCHAR},
+            </if>
+
+            <if test="departId != null">
+                #{departId,jdbcType=VARCHAR},
+            </if>
+            <if test="affairName != null">
+                #{affairName,jdbcType=VARCHAR},
+            </if>
+            <if test="level != null">
+                #{level,jdbcType=VARCHAR},
+            </if>
+            <if test="timeLimitType != null">
+                #{timeLimitType,jdbcType=VARCHAR},
+            </if>
+            <if test="timeLimit != null">
+                #{timeLimit,jdbcType=VARCHAR},
+            </if>
+            <if test="sortId != null">
+                #{sortId,jdbcType=VARCHAR},
+            </if>
+            <if test="resultForm != null">
+                #{resultForm,jdbcType=VARCHAR},
+            </if>
+            <if test="isNet != null">
+                #{isNet,jdbcType=VARCHAR},
+            </if>
+            <if test="code != null">
+                #{code,jdbcType=VARCHAR},
+            </if>
+            <if test="isTodo != null">
+                #{isTodo,jdbcType=VARCHAR},
+            </if>
+
+            <if test="isOnline != null">
+                #{isOnline,jdbcType=VARCHAR},
+            </if>
+
+            <if test="isWrite != null">
+                #{isWrite,jdbcType=VARCHAR},
+            </if>
+
+            <if test="config != null">
+                #{config,jdbcType=VARCHAR},
+            </if>
+
+            <if test="templateId != null">
+                #{templateId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="listByCname" resultMap="affairsAndBaseDic">
+        select
+        a.affairid, a.departid, a.affairname, a.level, a.timelimit_type, a.timelimit, a.sortid,
+        a.result_form,a.templateid,
+        a.isnet, a.code, a.istodo,a.isonline,a.iswrite,a.config,b.cname,b.baseDicId,b.baseDicType
+        from ss_affairs a,ss_base_dic b
+
+        <where>
+            a.departid =b.baseDicId
+            <if test="cName!= null and cName !=''">and cname=#{cName}</if>
+            <if test="baseDicType!=null and baseDicType != ''">and b.baseDicType=#{baseDicType}</if>
+            <if test="affairId != null and affairId != ''">and a.affairid = #{affairId}</if>
+            <if test="departId != null and departId != ''">and a.departid = #{departId}</if>
+            <if test="affairName != null and affairName != ''">and a.affairname LIKE '%${affairName}%'</if>
+            <if test="level != null and level != ''">and a.level = #{level}</if>
+            <if test="timeLimitType != null and timeLimitType != ''">and a.timelimit_type = #{timeLimitType}</if>
+            <if test="timeLimit != null and timeLimit != ''">and a.timelimit = #{timeLimit}</if>
+            <if test="sortId != null and sortId != ''">and a.sortid = #{sortId}</if>
+            <if test="resultForm != null and resultForm != ''">and a.result_form = #{resultForm}</if>
+            <if test="isNet != null and isNet != ''">and a.isnet = #{isNet}</if>
+            <if test="code != null and code != ''">and a.code = #{code}</if>
+            <if test="isTodo != null and isTodo != ''">and a.istodo = #{isTodo}</if>
+        </where>
+
+        <!-- <choose>
+             <when test="sort != null and sort.trim() != ''">
+                 order by ${sort} ${order}
+             </when>
+             <otherwise>
+                 order by a.affairId desc
+             </otherwise>
+         </choose>-->
+    </select>
+
+    <delete id="batchRemove">
+        delete from ss_affairs where affairid in
+        <foreach item="affairId" collection="array" open="(" separator=","
+                 close=")">
+            #{affairId}
+        </foreach>
+    </delete>
+
+    <update id="updateByTemplateId">
+        update ss_affairs SET templateid='0' where templateid=#{templateId}
+    </update>
+
+    <update id="updateByTemplateIds">
+        update ss_affairs SET templateid='0'
+        WHERE
+        templateid in
+        <foreach item="templateIds" collection="array" open="(" separator=","
+                 close=")">
+            #{templateIds}
+        </foreach>
+    </update>
+
+</mapper>
