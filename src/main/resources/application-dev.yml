@@ -38,6 +38,7 @@ spring:
 #    url: jdbc:sqlserver://localhost:1479;databaseName=QUEUE_ZC
 #    url: jdbc:sqlserver://19.134.193.95:1433;failoverPartner = 19.133.185.92;databaseName=QUEUE_ZC
     username: sa
+#    password: abc123@#
     password: frh1487521
     initialSize: 1
     minIdle: 3

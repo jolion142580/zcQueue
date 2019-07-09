@@ -141,7 +141,7 @@ function opinionbuttonClick(opinionIndex) {
     layer.open({
         type: 2,
         title: "选择模板",
-        area: ['500px', '320px'],
+        area: ['500px', '450px'],
         content: "/ss/pretrialopinion/view/" + id
     })
 }

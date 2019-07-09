@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yiko.ss.dao.BlackWhiteListDao">
+    <resultMap id="BaseResultMap" type="com.yiko.ss.domain.BlackWhiteList">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="openid" property="openid" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="id_card" property="idCard" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="time" property="time" jdbcType="VARCHAR"/>
+        <result column="flag" property="flag" jdbcType="VARCHAR"/>
+        <result column="forever" property="forever" jdbcType="VARCHAR"/>
+        <result column="creator" property="creator" jdbcType="VARCHAR"/>
+        <result column="creattime" property="creattime" jdbcType="VARCHAR"/>
+        <result column="updater" property="updater" jdbcType="VARCHAR"/>
+        <result column="updatetime" property="updatetime" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,openid,name,id_card,phone,time,flag,forever,creator,creattime,updater,updatetime
+    </sql>
+
+    <select id="queryList" resultMap="BaseResultMap" >
+        SELECT <include refid="Base_Column_List"/>
+        FROM  black_white_list
+        <where>
+            <if test="name != null and name != ''">
+                and name LIKE '%${name}%'
+            </if>
+            <if test="idCard != null and idCard != ''">
+                and id_card LIKE '%${idCard}%'
+            </if>
+            <if test="phone != null and phone != ''">
+                and phone LIKE '%${phone}%'
+            </if>
+            <if test="time != null and time != ''">
+                and time = #{time,jdbcType=VARCHAR}
+            </if>
+            <if test="flag != null and flag != ''">
+                and flag = #{flag,jdbcType=VARCHAR}
+            </if>
+            <if test="forever != null and forever != ''">
+                and forever = #{forever,jdbcType=VARCHAR}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        FROM black_white_list WHERE id = #{id}
+    </select>
+
+    <delete id="removeById" parameterType="java.lang.String">
+        DELETE FROM black_white_list WHERE id = #{id}
+    </delete>
+    <insert id="insert" parameterType="com.yiko.ss.domain.BlackWhiteList">
+      INSERT into black_white_list ( id,openid,name,id_card,phone,time,flag,forever,creator,creattime)
+       values (
+          #{id,jdbcType=VARCHAR},
+          #{openid,jdbcType=VARCHAR},
+          #{name,jdbcType=VARCHAR},
+          #{idCard,jdbcType=VARCHAR},
+          #{phone,jdbcType=VARCHAR},
+          #{time,jdbcType=VARCHAR},
+          #{flag,jdbcType=VARCHAR},
+          #{forever,jdbcType=VARCHAR},
+          #{creator,jdbcType=VARCHAR},
+          #{creattime,jdbcType=VARCHAR}
+      )
+    </insert>
+    <update id="updateById" parameterType="com.yiko.ss.domain.BlackWhiteList">
+      UPDATE black_white_list
+      <set>
+          <if test="idCard != null">
+              id_card = #{idCard,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              phone = #{phone,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              name = #{name,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              time = #{time,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              flag = #{flag,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              forever = #{forever,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              updater = #{updater,jdbcType=VARCHAR},
+          </if>
+          <if test="idCard != null">
+              updatetime = #{updatetime,jdbcType=VARCHAR},
+          </if>
+      </set>
+        WHERE id = #{id,jdbcType=VARCHAR}
+    </update>
+</mapper>
